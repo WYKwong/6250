@@ -13,13 +13,14 @@ chmod +x test-suite/standard/*.sh 2>/dev/null
 echo "========================================"
 echo "步骤 0: 清理环境"
 echo "========================================"
-./cleanup.sh 2>/dev/null || true
+# 仅清理 mininet 和 pox，不使用通用的 killall python 避免自杀
 sudo mn -c > /dev/null 2>&1 || true
+sudo pkill -9 pox || true
 
 echo "========================================"
 echo "步骤 1: 自动化生成 packetcapture.pcap"
 echo "========================================"
-sudo python gen_pcap.py
+sudo python3 gen_pcap.py
 echo ""
 
 echo "========================================"
@@ -85,11 +86,12 @@ sudo python test_all.py
 echo ""
 echo "========================================"
 echo "步骤 4: 清理环境"
-echo "========================================"
+echo "========================================" # 任务结束后清理进程
+echo "正在清理测试环境..."
 kill $POX_PID 2>/dev/null || true
 cd "$PROJECT_DIR"
-./cleanup.sh 2>/dev/null || true
 sudo mn -c > /dev/null 2>&1 || true
+sudo pkill -9 pox || true
 
 echo ""
 echo "========================================"

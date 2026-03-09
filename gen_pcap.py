@@ -6,9 +6,6 @@ from mininet.net import Mininet
 from mininet.link import TCLink
 
 def run_capture():
-    print("--- 正在清理旧环境 ---")
-    os.system("./cleanup.sh > /dev/null 2>&1")
-    
     print("--- 启动抓包拓扑并开始 Tshark ---")
     # 动态导入处理连字符文件名 ws-topology.py
     import sys
