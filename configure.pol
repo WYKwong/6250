@@ -1,0 +1,42 @@
+# CS 6250 Fall 2025 - SDN Firewall Project with POX
+# build gibson-29
+#
+# This file contains the rules for the firewall as specified in the Project Documentation.  
+#
+# Rule Format:
+# RuleNumber,Action,Source MAC,Destination MAC,Source IP,Destination IP,Protocol,Source Port,Destination Port,Comment/Note
+# RuleNumber = this is a rule number to help you track a particular rule - it is not used in the firewall implementation
+# Action = Block or Allow , Allow Rules need to take precedence over Block Rules
+# Source / Destination MAC address in form of xx:xx:xx:xx:xx:xx
+# Source / Destination IP Address in form of xxx.xxx.xxx.xxx/xx in CIDR notation
+# Protocol = integer IP protocol number per IANA (0-254)
+# Source / Destination Port = if Protocol is TCP or UDP, this is the Application Port Number per IANA
+# Comment/Note = this is for your use in tracking rules.
+#
+# Any field not being used for a match should have a '-' character as it's entry (except for RuleNumber/Comment)
+# Do not pad any of the entries (i.e., have a rule like:  1, Block, -, -,...)
+#
+# Warning:  For the IP address, you need to specify an appropriate network address
+# that matches the subnet mask you are using.  For instance, if you want to use a /16
+# subnet mask, then the IP address must be x.x.0.0.  For example, a proper address to 
+# reference a 192.168.10.x/24 network would be 192.168.10.0/24.  A single host
+# is addressed as a single IP address with a /32.  In other words, the host bit for a 
+# subnet other than /32 must be 0.
+#
+# Example Rules:
+1,Block,-,-,10.0.30.4/32,-,6,-,-,Block all TCP from cn4
+2,Block,-,-,-,10.0.30.5/32,-,-,-,Block all traffic to cn5
+3,Block,-,-,10.0.30.5/32,-,-,-,-,Block all traffic from cn5
+4,Block,-,-,-,-,1,-,-,Block all ICMP
+5,Allow,-,-,10.0.0.0/24,-,1,-,-,Allow ICMP from HQ
+6,Allow,-,-,-,10.0.0.0/24,1,-,-,Allow ICMP to HQ
+7,Block,-,-,10.0.30.3/32,-,6,80,-,Block cn3 TCP src port 80
+8,Block,-,-,10.0.30.3/32,-,6,443,-,Block cn3 TCP src port 443
+9,Block,-,-,-,10.0.30.3/32,6,-,80,Block TCP to cn3 dst port 80
+10,Block,-,-,-,10.0.30.3/32,6,-,443,Block TCP to cn3 dst port 443
+11,Block,-,-,10.0.40.128/30,10.0.1.32/30,6,-,9520,Block uk2-uk5 TCP 9520 to us3 us4
+12,Block,-,-,10.0.20.124/30,10.0.1.32/30,6,-,9520,Block in4-in5 TCP 9520 to us3 us4
+13,Block,-,-,10.0.1.112/28,10.0.1.32/30,6,-,9520,Block us5 TCP 9520 to us3 us4
+14,Block,-,-,10.0.0.208/28,10.0.1.32/30,6,-,9520,Block hq5 TCP 9520 to us3 us4
+15,Block,00:00:00:01:00:1e,-,-,-,17,-,-,Block us1 MAC all UDP
+16,Block,-,-,-,-,6,-,25,Block all TCP SMTP port 25
